@@ -1,0 +1,28 @@
+Loading Data:-
+
+A = load '/home/acadgild/StudentDS.txt' USING PigStorage (',') AS (name:chararray,col:chararray,dob:chararray,stream:chararray,
+    grade:float,state:chararray,city:chararray);
+
+1)Number of students who scored less than 5(50%):-
+
+B = filter A by grade < 5.0F;
+C = group B ALL;
+D = foreach C GENERATE COUNT(B.name);
+
+2)Name of students who are from Alaska:-
+
+B = filter A BY (state == 'alaska');
+C = GROUP B BY name;
+D = FOREACH C GENERATE FLATTEN(B.name);
+
+3)How many government colleges are there in Alabama:-
+
+B = filter A BY (col == 'government');
+C = GROUP B BY col;
+D = FOREACH C GENERATE COUNT(B.col);
+
+4)List the name of students who are from Oregon and pursuing BE:-
+
+B = filter A BY (stream == 'BE' AND state == 'oregon');
+C = GROUP B BY stream;
+D = FOREACH C GENERATE B.name;
